@@ -6,7 +6,7 @@ Dotenv.load
 #==================below is pasted code
 
 
-class Contact2
+class Contact
   # # These are my database credentials. You'll need to replace them with yours.
   # CONN = PG::Connection.new({
   #     host: 'localhost',
@@ -18,19 +18,19 @@ class Contact2
 # Note: You'll want to put in your own heroku creds
 # Connect to database.
 uri = URI.parse(ENV['DATABASE_URL'])
-CONN = PG.connect(uri.hostname, uri.port, nil, nil, uri.path[1..-1], uri.user, uri.password)
+@@postgres = PG.connect(uri.hostname, uri.port, nil, nil, uri.path[1..-1], uri.user, uri.password)
 # Output all author records from the authors table
 puts "getting authors ..."
-CONN.exec( "SELECT * FROM contacts" ) do |results|
+@@postgres.exec( "SELECT * FROM contacts" ) do |results|
   # results is a collection (array) of records (hashes)... Nice!
   results.each do |author|
     puts author.inspect
   end
 end
 
-puts "Closing the db connection..."
-CONN.close
-puts "DONE"
+# puts "Closing the db connection..."
+# @@postgres.close
+# puts "DONE"
 
 
 attr_accessor :firstname, :lastname, :email
@@ -47,30 +47,30 @@ def is_new?
   @id.nil?
 end
 
-def valid?
-  id != nil
-end
+# def valid?
+#   id != nil
+# end
 
 def save
-  raise 'Invalid Instructor!' unless valid?
+  #raise 'Invalid Instructor!' unless valid?
   if is_new?
-    result = CONN.exec_params('INSERT INTO contacts (firstname, lastname) VALUES ($1, $2) returning id', [@firstname, @lastname])
+    result = @@postgres.exec_params('INSERT INTO contacts (firstname, lastname, email) VALUES ($1, $2, $3) returning id', [@firstname, @lastname, @email])
       # binding.pry
       @id = result[0]['id']
     else
-      CONN.exec_params('UPDATE contacts SET name = $1, coolness = $2 WHERE id = $3', [@name, @coolness, @id])
+      @@postgres.exec_params('UPDATE contacts SET firstname = $1, lastname = $2, email = $3 WHERE id = $4', [@name, @lastname, @email, @id])
     end
   end
 
   def destroy
-    CONN.exec_params('DELETE FROM contacts WHERE id = $1', [@id])
+    postgres.exec_params('DELETE FROM contacts WHERE id = $1', [@id])
   end
 
   ## DANGER Below is wet wet code. It's up to you to DRY it out and make it more succinct.
   
   def self.find(id)
     result = nil
-    CONN.exec_params('SELECT id, name, coolness FROM contacts WHERE id = $1 LIMIT 1', [id]) do |rows|
+    postgres.exec_params('SELECT id, name, coolness FROM contacts WHERE id = $1 LIMIT 1', [id]) do |rows|
       rows.each do |row|
         result = Instructor.new(
           row['name'],
@@ -84,7 +84,7 @@ def save
 
   def self.all
     results = []
-    CONN.exec_params('SELECT id, name, coolness FROM contacts') do |rows|
+    postgres.exec_params('SELECT id, name, coolness FROM contacts') do |rows|
       rows.each do |row|
         results << Instructor.new(
           row['name'],
@@ -98,7 +98,7 @@ def save
 
   def self.where_coolness_above(coolness)
     results = []
-    CONN.exec_params('SELECT id, name, coolness FROM contacts WHERE coolness > $1', [coolness]) do |rows|
+    postgres.exec_params('SELECT id, name, coolness FROM contacts WHERE coolness > $1', [coolness]) do |rows|
       rows.each do |row|
         results << Instructor.new(
           row['name'],
