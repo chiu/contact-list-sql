@@ -1,1 +1,0 @@
-contact: #<Contact:0xa0fcb84 @contact_id=77, @name="maxwell Smith", @email="maxgmail.com">

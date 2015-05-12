@@ -17,8 +17,8 @@ drake.destroy
 
 
 coolguy = Contact.find(2)
-#puts coolguy.inspect  
 
+#puts coolguy.inspect  
 
 
 all_people = Contact.all
