@@ -1,53 +1,54 @@
 #main.rb
 require_relative 'contact'
-require_relative 'database'
+require_relative 'table_manager'
 require 'pry'
 
 
 # arvinder = Instructor.new('Arvinder', 1000)
 # arvinder.save
 
-#  charlie = Database.new('Charlie', 'Bennett', 'charlie@gmail.com')
+#  charlie = TableManager.new('Charlie', 'Bennett', 'charlie@gmail.com')
 #  charlie.save
 
 
-# drake = Database.new('Drake', 'Darrington', 'drakeydrake@gmail.com')
+# drake = TableManager.new('Drake', 'Darrington', 'drakeydrake@gmail.com')
 # drake.save
 
 # drake.destroy
 
+TableManager.open_table
 
-coolguy = Database.find(2)
+coolguy = Contact.find(2)
 
-#puts coolguy.inspect  
-
-
-all_people = Database.all
-#puts all_people.inspect
+puts coolguy.inspect  
 
 
-anders = Database.find_all_by_lastname('Anders')
-#puts anders.inspect
+all_people = Contact.all
+puts all_people.inspect
+
+
+anders = Contact.find_all_by_lastname('Anders')
+puts anders.inspect
 
 
 puts "start test"
-charlie_clones = Database.find_all_by_lastname('Bennett')
+charlie_clones = Contact.find_all_by_lastname('Bennett')
 puts charlie_clones.inspect
 
 puts "start test"
-charlie_clones2 = Database.find_all_by_firstname('Charlie')
+charlie_clones2 = Contact.find_all_by_firstname('Charlie')
 puts charlie_clones2.inspect
 
 puts "start test"
-charlie_clones2 = Database.find_all_by_firstname('Drake')
+charlie_clones2 = Contact.find_all_by_firstname('Drake')
 puts charlie_clones2.inspect
 
 puts "email start test"
-email_clones2 = Database.find_all_by_email('drakeydrake@gmail.com')
+email_clones2 = Contact.find_all_by_email('drakeydrake@gmail.com')
 puts email_clones2.inspect
 
 
  puts "universal test"
 
-anders = Database.find_all_by_lastname('Anders')
+anders = Contact.find_all_by_lastname('Anders')
  puts anders.inspect
