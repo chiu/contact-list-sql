@@ -79,20 +79,6 @@ end
     results
   end
 
-  def self.find_all_by_lastname(lastname)
-    results = []
-    @@postgres.exec_params('SELECT id, firstname, lastname, email FROM contacts WHERE lastname = $1', [lastname]) do |rows|
-      rows.each do |row|
-        results << Contact.new(
-          row['firstname'],
-          row['lastname'],
-          row['email'],
-          row['id']
-          )
-      end
-    end
-    results
-  end
 
 
   def self.find_all_by_firstname(firstname)
@@ -126,6 +112,28 @@ end
     results
   end
 
+
+
+  def self.find_univeral(column_name, value)
+    results = []
+    puts column_name
+    puts query_string = "SELECT id, firstname, lastname, email FROM contacts WHERE #{column_name} = $1"
+    @@postgres.exec_params(query_string, [value]) do |rows|
+      rows.each do |row|
+        results << Contact.new(
+          row['firstname'],
+          row['lastname'],
+          row['email'],
+          row['id']
+          )
+      end
+    end
+    results
+  end
+
+  def self.find_all_by_lastname(lastname_value)
+   self.find_univeral('lastname', lastname_value)
+ end
 
 
 
