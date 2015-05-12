@@ -85,12 +85,7 @@ end
     puts query_string = "SELECT id, firstname, lastname, email FROM contacts WHERE #{column_name} = $1"
     @@postgres.exec_params(query_string, [value]) do |rows|
       rows.each do |row|
-        results << Contact.new(
-          row['firstname'],
-          row['lastname'],
-          row['email'],
-          row['id']
-          )
+        results << Contact.new(row['firstname'],row['lastname'],row['email'],row['id'])
       end
     end
     results
@@ -102,17 +97,14 @@ end
    self.find_univeral('firstname', firstname_value)
  end
 
-  def self.find_all_by_email(email_value)
-    self.find_univeral('email', email_value)
-  end
+ def self.find_all_by_email(email_value)
+  self.find_univeral('email', email_value)
+end
 
 
-
-
-
-  def self.find_all_by_lastname(lastname_value)
-   self.find_univeral('lastname', lastname_value)
- end
+def self.find_all_by_lastname(lastname_value)
+ self.find_univeral('lastname', lastname_value)
+end
 
 
 
