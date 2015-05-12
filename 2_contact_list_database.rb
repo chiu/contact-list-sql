@@ -33,17 +33,28 @@ end
 # puts "DONE"
 
 
-attr_accessor :firstname, :lastname, :email
+
+
+
+attr_accessor :firstname, :lastname, :email 
 attr_reader :id
 
+
+def postgres
+
+  @@postgres
+
+end
+
 def initialize(firstname, lastname, email, id=nil)
-  @name = firstname
+  @firstname = firstname
   @lastname = lastname
   @email = email
   @id = id
 end
 
 def is_new?
+  #puts @id
   @id.nil?
 end
 
@@ -53,12 +64,13 @@ end
 
 def save
   #raise 'Invalid Instructor!' unless valid?
+  # puts self.inspect
   if is_new?
-    result = @@postgres.exec_params('INSERT INTO contacts (firstname, lastname, email) VALUES ($1, $2, $3) returning id', [@firstname, @lastname, @email])
-      # binding.pry
+    result = postgres.exec_params('INSERT INTO contacts (firstname, lastname, email) VALUES ($1, $2, $3) returning id', [@firstname, @lastname, @email])
+      #puts result.inspect
       @id = result[0]['id']
     else
-      @@postgres.exec_params('UPDATE contacts SET firstname = $1, lastname = $2, email = $3 WHERE id = $4', [@name, @lastname, @email, @id])
+      postgres.exec_params('UPDATE contacts SET firstname = $1, lastname = $2, email = $3 WHERE id = $4', [@firstname, @lastname, @email, @id])
     end
   end
 
@@ -70,11 +82,12 @@ def save
   
   def self.find(id)
     result = nil
-    postgres.exec_params('SELECT id, name, coolness FROM contacts WHERE id = $1 LIMIT 1', [id]) do |rows|
+    @@postgres.exec_params('SELECT id, firstname, lastname, email FROM contacts WHERE id = $1 LIMIT 1', [id]) do |rows|
       rows.each do |row|
-        result = Instructor.new(
-          row['name'],
-          row['coolness'],
+        result = Contact.new(
+          row['firstname'],
+          row['lastname'],
+          row['email'],
           row['id']
           )
       end
@@ -84,11 +97,12 @@ def save
 
   def self.all
     results = []
-    postgres.exec_params('SELECT id, name, coolness FROM contacts') do |rows|
+    @@postgres.exec_params('SELECT id, firstname, lastname, email FROM contacts') do |rows|
       rows.each do |row|
-        results << Instructor.new(
-          row['name'],
-          row['coolness'],
+        results << Contact.new(
+           row['firstname'],
+          row['lastname'],
+          row['email'],
           row['id']
           )
       end
@@ -96,18 +110,18 @@ def save
     results
   end
 
-  def self.where_coolness_above(coolness)
-    results = []
-    postgres.exec_params('SELECT id, name, coolness FROM contacts WHERE coolness > $1', [coolness]) do |rows|
-      rows.each do |row|
-        results << Instructor.new(
-          row['name'],
-          row['coolness'],
-          row['id']
-          )
-      end
-    end
-    results
-  end
+  # def self.where_coolness_above(coolness)
+  #   results = []
+  #   postgres.exec_params('SELECT id, name, coolness FROM contacts WHERE coolness > $1', [coolness]) do |rows|
+  #     rows.each do |row|
+  #       results << Instructor.new(
+  #         row['name'],
+  #         row['coolness'],
+  #         row['id']
+  #         )
+  #     end
+  #   end
+  #   results
+  # end
 
 end
