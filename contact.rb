@@ -36,36 +36,6 @@ def destroy
 end
 
   ## DANGER Below is wet wet code. It's up to you to DRY it out and make it more succinct.
-  
-  def self.find(id)
-    result = nil
-    @@postgres.exec_params('SELECT id, firstname, lastname, email FROM contacts WHERE id = $1 LIMIT 1', [id]) do |rows|
-      rows.each do |row|
-        result = Contact.new(
-          row['firstname'],
-          row['lastname'],
-          row['email'],
-          row['id']
-          )
-      end
-    end
-    result
-  end
-
-  def self.all
-    results = []
-    @@postgres.exec_params('SELECT id, firstname, lastname, email FROM contacts') do |rows|
-      rows.each do |row|
-        results << Contact.new(
-         row['firstname'],
-         row['lastname'],
-         row['email'],
-         row['id']
-         )
-      end
-    end
-    results
-  end
 
   
 
