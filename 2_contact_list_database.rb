@@ -3,20 +3,8 @@ require 'dotenv'
 require 'uri'
 Dotenv.load
 
-#==================below is pasted code
-
 
 class Contact
-  # # These are my database credentials. You'll need to replace them with yours.
-  # CONN = PG::Connection.new({
-  #     host: 'localhost',
-  #     user: 'classdemo',
-  #     password: 'classdemo',
-  #     dbname: 'ormlecture'
-  # })
-# Establish a connection to the database (requires internet since it's on heroku!)
-# Note: You'll want to put in your own heroku creds
-# Connect to database.
 uri = URI.parse(ENV['DATABASE_URL'])
 @@postgres = PG.connect(uri.hostname, uri.port, nil, nil, uri.path[1..-1], uri.user, uri.password)
 # Output all author records from the authors table
@@ -28,22 +16,12 @@ puts "getting authors ..."
   end
 end
 
-# puts "Closing the db connection..."
-# @@postgres.close
-# puts "DONE"
-
-
-
-
-
 attr_accessor :firstname, :lastname, :email 
 attr_reader :id
 
 
 def postgres
-
   @@postgres
-
 end
 
 def initialize(firstname, lastname, email, id=nil)
@@ -58,13 +36,7 @@ def is_new?
   @id.nil?
 end
 
-# def valid?
-#   id != nil
-# end
-
 def save
-  #raise 'Invalid Instructor!' unless valid?
-  # puts self.inspect
   if is_new?
     result = postgres.exec_params('INSERT INTO contacts (firstname, lastname, email) VALUES ($1, $2, $3) returning id', [@firstname, @lastname, @email])
       #puts result.inspect
