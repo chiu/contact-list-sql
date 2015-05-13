@@ -1,6 +1,6 @@
 require_relative 'table_manager'
 
-class Contact
+class Contact < ActiveRecord::Base
 
 
   attr_accessor :firstname, :lastname, :email 
