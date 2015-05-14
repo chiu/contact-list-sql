@@ -26,18 +26,18 @@ class Contact < ActiveRecord::Base
   @id.nil?
 end
 
-def save
-  if is_new?
-    result = postgres.exec_params('INSERT INTO contacts (firstname, lastname, email) VALUES ($1, $2, $3) returning id', [@firstname, @lastname, @email])
-    @id = result[0]['id']
-  else
-    postgres.exec_params('UPDATE contacts SET firstname = $1, lastname = $2, email = $3 WHERE id = $4', [@firstname, @lastname, @email, @id])
-  end
-end
+# def save
+#   if is_new?
+#     result = postgres.exec_params('INSERT INTO contacts (firstname, lastname, email) VALUES ($1, $2, $3) returning id', [@firstname, @lastname, @email])
+#     @id = result[0]['id']
+#   else
+#     postgres.exec_params('UPDATE contacts SET firstname = $1, lastname = $2, email = $3 WHERE id = $4', [@firstname, @lastname, @email, @id])
+#   end
+# end
 
-def destroy
-  postgres.exec_params('DELETE FROM contacts WHERE id = $1', [@id])
-end
+# def destroy
+#   postgres.exec_params('DELETE FROM contacts WHERE id = $1', [@id])
+# end
 
 
 
