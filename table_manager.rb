@@ -1,6 +1,7 @@
 require 'pry' # incase you want to use binding.pry
 require 'active_record'
 require_relative 'contact'
+require_relative 'phone_number'
 # require_relative 'store'
 # require_relative 'employee'
 
@@ -36,6 +37,8 @@ puts "Setting up Database (recreating tables) ..."
 ActiveRecord::Schema.define do
 
   drop_table :contacts if ActiveRecord::Base.connection.table_exists?(:contacts)
+  drop_table :phones if ActiveRecord::Base.connection.table_exists?(:phones)
+  # drop_table :phone_table if ActiveRecord::Base.connection.table_exists?(:phone_table)
 
   create_table :contacts do |t|
     t.column :firstname, :string
@@ -43,6 +46,21 @@ ActiveRecord::Schema.define do
     t.column :email, :string
     t.timestamps
   end
+
+  create_table :phones do |t|
+    t.references :contact
+    t.column :number_of_phone, :string
+    # t.column :owner_id, :integer
+    # t.column :email, :string
+    t.timestamps
+  end
+
+
+
+
+
+
+
 end
 
 puts "Setup DONE"
