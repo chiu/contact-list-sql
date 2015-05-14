@@ -1,10 +1,15 @@
 #main.rb
-require_relative 'setup'
-require_relative 'contact'
+
+# require_relative 'contact'
 require_relative 'table_manager'
-require 'pry'
+# require 'pry'
+
+
+TableManager.open_table
 
 
 
-john = Contact.new('John', 'Smith', 'johnsmith@gmail.com')
+john_attributes = {firstname: 'John', lastname: 'Smith', email: 'johnsmith@gmail.com'}
+john = Contact.new(john_attributes)
+puts john.inspect
 john.save
