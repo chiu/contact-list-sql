@@ -1,7 +1,7 @@
 require 'pry' # incase you want to use binding.pry
 require 'active_record'
-require_relative 'store'
-require_relative 'employee'
+# require_relative 'store'
+# require_relative 'employee'
 
 
 class TableManager
@@ -43,24 +43,24 @@ puts "CONNECTED"
 puts "Setting up Database (recreating tables) ..."
 
 ActiveRecord::Schema.define do
-  drop_table :stores if ActiveRecord::Base.connection.table_exists?(:stores)
-  drop_table :employees if ActiveRecord::Base.connection.table_exists?(:employees)
+  # drop_table :stores if ActiveRecord::Base.connection.table_exists?(:stores)
+  # drop_table :employees if ActiveRecord::Base.connection.table_exists?(:employees)
   drop_table :contacts if ActiveRecord::Base.connection.table_exists?(:contacts)
   
-  create_table :stores do |t|
-    t.column :name, :string
-    t.column :annual_revenue, :integer
-    t.column :mens_apparel, :boolean
-    t.column :womens_apparel, :boolean
-    t.timestamps
-  end
-  create_table :employees do |table|
-    table.references :store
-    table.column :first_name, :string
-    table.column :last_name, :string
-    table.column :hourly_rate, :integer
-    table.timestamps
-  end
+  # create_table :stores do |t|
+  #   t.column :name, :string
+  #   t.column :annual_revenue, :integer
+  #   t.column :mens_apparel, :boolean
+  #   t.column :womens_apparel, :boolean
+  #   t.timestamps
+  # end
+  # create_table :employees do |table|
+  #   table.references :store
+  #   table.column :first_name, :string
+  #   table.column :last_name, :string
+  #   table.column :hourly_rate, :integer
+  #   table.timestamps
+  # end
     create_table :contacts do |t|
     t.column :firstname, :string
     t.column :lastname, :string
