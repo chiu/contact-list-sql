@@ -7,7 +7,7 @@
 
 # end
 
-
+def generate_random_names
 
 for i in 1..100
 puts (0...10).map { ('a'..'z').to_a[rand(26)] }.join

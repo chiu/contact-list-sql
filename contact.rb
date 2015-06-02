@@ -3,7 +3,7 @@
 class Contact < ActiveRecord::Base
 
 
-     has_many :phonenumbers
+     has_many :phones
 
  def self.find_all_by_lastname(name_argument)
     where(lastname:  name_argument)

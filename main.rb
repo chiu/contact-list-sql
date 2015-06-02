@@ -99,6 +99,27 @@ def generate_phone_number
 
 end
 
+def generate_random_name
+
+# for i in 1..100
+random_name =  (0...10).map { ('a'..'z').to_a[rand(26)] }.join
+
+end
+
+
+
+
+
+
+for i in 0..10
+
+tyler_attributes = {firstname: generate_random_name, lastname: generate_random_name, email: 'tylersmith@gmail.com'}
+tyler = Contact.new(tyler_attributes)
+puts tyler.inspect
+tyler.save
+
+end
+
 for i in 0..Contact.count-1
 
 phone_attributes = {number_of_phone: generate_phone_number , contact_id: rand(Contact.count)}
@@ -108,13 +129,7 @@ someone_number.save
 
 end
 
-
-
-
-
-
-
-puts Contact.search_all('Smith').inspect
+# puts Contact.search_all('Smith').inspect
 
 
 
